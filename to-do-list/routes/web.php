@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('/to-do-list', ToDoController::class);
+Route::put('/to-do-list/{todo}/mark-completed', [ToDoController::class, 'markCompleted'])->name('mark-complete');

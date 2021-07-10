@@ -16,7 +16,15 @@
     <div class="w-5/6 py-10">
         @foreach ($todos as $todo)
             <div class="m-auto">
-                <div class="float-right">
+                <div class="">
+                    <form class="pt-3" action="{{ route('mark-complete', $todo) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit"
+                        class="border-b-2 pb-2 border-dotted italic text-red-500">
+                            Mark as completed &rarr;
+                        </button>
+                    </form>
                     <a href="to-do-list/{{ $todo->id }}/edit"
                         class="border-b-2 pb-2 border-dotted italic text-green-500">
                         Edit &rarr;
@@ -30,7 +38,7 @@
                         </button>
                     </form>
                 </div>
-                <h2 class="text-gray-700 text-5xl">
+                <h2 class="{{ $todo->is_completed ? 'text-red-700' : 'text-gray-700' }} text-5xl">
                     {{ $todo->to_do }}
                 </h2>
                 <hr class="mt-4 mb-8">

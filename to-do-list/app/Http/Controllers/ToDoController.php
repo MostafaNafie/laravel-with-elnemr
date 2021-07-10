@@ -98,4 +98,13 @@ class ToDoController extends Controller
         ToDo::where('id', $id)->delete();
         return redirect('/to-do-list');
     }
+
+    public function markCompleted(ToDo $todo) {
+        ToDo::where('id', $todo->id)->update([
+            'to_do' => $todo->to_do,
+            'is_completed' => !($todo->is_completed)
+        ]);
+
+        return redirect('/to-do-list');
+    }
 }
