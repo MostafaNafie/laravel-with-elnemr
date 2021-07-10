@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ToDo;
 use Illuminate\Http\Request;
 
 class ToDoController extends Controller
@@ -13,7 +14,10 @@ class ToDoController extends Controller
      */
     public function index()
     {
-        //
+        $todos = ToDo::all();
+        return view('to-do-list.index', [
+            'todos' => $todos
+        ]);
     }
 
     /**
@@ -23,7 +27,7 @@ class ToDoController extends Controller
      */
     public function create()
     {
-        //
+        return view('to-do-list.create');
     }
 
     /**
@@ -34,7 +38,11 @@ class ToDoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        ToDo::create([
+            'to_do' => request()->input('to_do')
+        ]);
+
+        return redirect('/to-do-list');
     }
 
     /**
@@ -56,7 +64,10 @@ class ToDoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $todo = ToDo::find($id);
+        return view('to-do-list.update', [
+            'todo' => $todo
+        ]);
     }
 
     /**
@@ -68,7 +79,12 @@ class ToDoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $todo = ToDo::where('id', $id)
+            ->update([
+                'to_do' => request()->input('to_do')
+            ]);
+
+        return redirect('/to-do-list');
     }
 
     /**
@@ -79,6 +95,7 @@ class ToDoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        ToDo::where('id', $id)->delete();
+        return redirect('/to-do-list');
     }
 }
