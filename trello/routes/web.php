@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BoardListsController;
 use App\Http\Controllers\BoardsController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('/', BoardsController::class);
+Route::resource('/lists', BoardListsController::class);
+Route::get('/lists/create/{boardID}', [BoardListsController::class, 'create'])->name('create');

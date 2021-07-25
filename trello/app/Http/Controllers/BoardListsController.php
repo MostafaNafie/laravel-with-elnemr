@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Board;
+use App\Models\BoardList;
 use Illuminate\Http\Request;
 
-class BoardsController extends Controller
+class BoardListsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +15,7 @@ class BoardsController extends Controller
      */
     public function index()
     {
-        $boards = Board::get();
-        return view('index', [
-            'boards' => $boards
-        ]);
+        //
     }
 
     /**
@@ -25,9 +23,11 @@ class BoardsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(int $boardID)
     {
-        return view('create');
+        return view('lists.create', [
+            'boardID' => $boardID
+        ]);
     }
 
     /**
@@ -38,10 +38,11 @@ class BoardsController extends Controller
      */
     public function store(Request $request)
     {
-        Board::create([
-            'name' => request( )->input('name')
+        BoardList::create([
+            'name' => request()->input('name'),
+            'board_id' => request()->input('board_id')
         ]);
-        return redirect('/');
+        return redirect('/lists/' . request()->input('board_id'));
     }
 
     /**
@@ -52,7 +53,13 @@ class BoardsController extends Controller
      */
     public function show($id)
     {
-        //
+        
+        $board = Board::find($id);
+
+        return view('lists.show', [
+            'board' => $board
+        ]);
+
     }
 
     /**

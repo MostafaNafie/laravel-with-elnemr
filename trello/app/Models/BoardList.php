@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Board extends Model
+class BoardList extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name'
-    ];
+    public $timestamps = false;
 
-    public function boardLists() {
-        return $this->hasMany(BoardList::class);
-    }
+    protected $fillable = [
+        'name',
+        'board_id'
+    ];
 }
