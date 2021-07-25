@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestForm;
 use App\Models\Board;
 use Illuminate\Http\Request;
 
@@ -36,10 +37,10 @@ class BoardsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestForm $request)
     {
         Board::create([
-            'name' => request( )->input('name')
+            'name' => $request->name
         ]);
         return redirect('/');
     }

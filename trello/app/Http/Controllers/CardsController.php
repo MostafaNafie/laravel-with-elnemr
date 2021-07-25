@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestForm;
 use App\Models\BoardList;
 use App\Models\Card;
 use Illuminate\Http\Request;
@@ -26,11 +27,11 @@ class CardsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestForm $request)
     {
         Card::create([
-            'name' => request()->input('name'),
-            'list_id' => request()->input('list_id')
+            'name' => $request->name,
+            'list_id' => $request->list_id
         ]);
         return redirect('/cards/' . request()->input('list_id'));
     }
