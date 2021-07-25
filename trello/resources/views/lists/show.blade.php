@@ -14,10 +14,25 @@
 <br>
 <br>
 
-@foreach ($board->boardLists as $list)
-    <li >
-        <a >
-            {{ $list->name }}
-        </a>
-    </li>
-@endforeach
+@forelse ($board->boardLists as $list)
+    <ul>
+        <li>
+            <a href="/cards/{{ $list->id }}">
+                {{ $list->name }}
+            </a>
+            <ul>
+                @forelse($list->cards as $card)
+                    <li>
+                        <a>
+                            {{ $card->name }}
+                        </a>
+                    </li>
+                @empty
+                    No cards
+                @endforelse
+            </ul>
+        </li>
+    </ul>
+@empty
+    No Lists
+@endforelse

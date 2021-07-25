@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BoardListsController;
 use App\Http\Controllers\BoardsController;
+use App\Http\Controllers\CardsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// boards
 Route::resource('/', BoardsController::class);
+// lists
 Route::resource('/lists', BoardListsController::class);
 Route::get('/lists/create/{boardID}', [BoardListsController::class, 'create'])->name('create');
+// cards
+Route::resource('/cards', CardsController::class);
+Route::get('/cards/create/{listID}', [CardsController::class, 'create'])->name('create');
