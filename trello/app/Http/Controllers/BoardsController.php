@@ -4,10 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestForm;
 use App\Models\Board;
-use Illuminate\Http\Request;
+use App\Repositories\Repository;
 
 class BoardsController extends Controller
 {
+    protected $model;
+
+    public function __construct(Board $board)
+    {
+        // set the model
+        $this->model = new Repository($board);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,9 +23,8 @@ class BoardsController extends Controller
      */
     public function index()
     {
-        $boards = Board::get();
         return view('index', [
-            'boards' => $boards
+            'boards' => $this->model->all()
         ]);
     }
 
@@ -39,9 +46,8 @@ class BoardsController extends Controller
      */
     public function store(RequestForm $request)
     {
-        Board::create([
-            'name' => $request->name
-        ]);
+        $data = $request->only($this->model->getModel()->fillable);
+        $this->model->create($data);
         return redirect('/');
     }
 }

@@ -5,10 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RequestForm;
 use App\Models\Board;
 use App\Models\BoardList;
-use Illuminate\Http\Request;
+use App\Repositories\Repository;
 
 class BoardListsController extends Controller
 {
+    protected $model;
+    protected $boardModel;
+
+    public function __construct(BoardList $list, Board $boardModel)
+    {
+        // set the model
+        $this->model = new Repository($list);
+        $this->boardModel = new Repository($boardModel);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -29,10 +39,8 @@ class BoardListsController extends Controller
      */
     public function store(RequestForm $request)
     {
-        BoardList::create([
-            'name' => $request->name,
-            'board_id' => $request->board_id
-        ]);
+        $data = $request->only($this->model->getModel()->fillable);
+        $this->model->create($data);
         return redirect('/lists/' . request()->input('board_id'));
     }
 
@@ -44,9 +52,8 @@ class BoardListsController extends Controller
      */
     public function show($id)
     {
-        $board = Board::find($id);
         return view('lists.show', [
-            'board' => $board
+            'board' => $this->boardModel->show($id)
         ]);
     }
 }

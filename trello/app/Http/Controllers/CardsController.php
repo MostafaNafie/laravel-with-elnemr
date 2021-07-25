@@ -5,10 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RequestForm;
 use App\Models\BoardList;
 use App\Models\Card;
-use Illuminate\Http\Request;
+use App\Repositories\Repository;
 
 class CardsController extends Controller
 {
+    protected $model;
+    protected $listModel;
+    
+    public function __construct(Card $card, BoardList $listModel)
+    {
+        // set the model
+        $this->model = new Repository($card);
+        $this->listModel = new Repository($listModel);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -29,10 +39,8 @@ class CardsController extends Controller
      */
     public function store(RequestForm $request)
     {
-        Card::create([
-            'name' => $request->name,
-            'list_id' => $request->list_id
-        ]);
+        $data = $request->only($this->model->getModel()->fillable);
+        $this->model->create($data);
         return redirect('/cards/' . request()->input('list_id'));
     }
 
@@ -44,9 +52,8 @@ class CardsController extends Controller
      */
     public function show($id)
     {
-        $list = BoardList::find($id);
         return view('cards.show', [
-            'list' => $list
+            'list' => $this->listModel->show($id)
         ]);
     }
 }
